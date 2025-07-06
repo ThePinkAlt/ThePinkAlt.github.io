@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Roblox API URL Replacer & Fetcher</title>
+  <title>Roblox API Proxy Fetcher</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,54 +11,35 @@
       background: #f4f4f4;
       color: #222;
     }
-    input, button {
-      font-size: 1rem;
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      width: 100%;
-      max-width: 600px;
-      box-sizing: border-box;
-    }
-    button {
-      cursor: pointer;
-    }
     pre {
       background: #222;
       color: #eee;
       padding: 1rem;
       border-radius: 6px;
-      max-height: 400px;
+      max-height: 90vh;
       overflow: auto;
       white-space: pre-wrap;
       word-wrap: break-word;
-      max-width: 600px;
     }
   </style>
 </head>
 <body>
-  <h1>Roblox API Proxy URL Fetcher</h1>
-  <p>Paste a URL starting with <code>https://ThePinkAlt.itch.io/</code> below:</p>
-  <input type="text" id="urlInput" placeholder="https://ThePinkAlt.itch.io/v1/games/multiget-place-details?placeIds=81500510" />
-  <button id="fetchBtn">Fetch Data</button>
-  <pre id="output">Output will appear here...</pre>
+  <h1>Roblox API Proxy Fetcher</h1>
+  <pre id="output">Loading...</pre>
 
   <script>
-    const urlInput = document.getElementById('urlInput');
-    const fetchBtn = document.getElementById('fetchBtn');
-    const output = document.getElementById('output');
+    (async () => {
+      const output = document.getElementById('output');
 
-    fetchBtn.addEventListener('click', async () => {
-      output.textContent = 'Loading...';
+      const currentUrl = window.location.href;
 
-      let userUrl = urlInput.value.trim();
-
-      if (!userUrl.startsWith('https://ThePinkAlt.itch.io/')) {
-        output.textContent = 'Error: URL must start with https://ThePinkAlt.itch.io/';
+      if (!currentUrl.includes('ThePinkAlt.itch.io')) {
+        output.textContent = 'Error: This page should be served from ThePinkAlt.itch.io domain.';
         return;
       }
 
-      // Replace ThePinkAlt.itch.io with games.roblox.com
-      const realUrl = userUrl.replace('ThePinkAlt.itch.io', 'games.roblox.com');
+      // Replace domain
+      const realUrl = currentUrl.replace('ThePinkAlt.itch.io', 'games.roblox.com');
 
       try {
         const response = await fetch(realUrl);
@@ -70,7 +51,7 @@
       } catch (error) {
         output.textContent = 'Fetch error: ' + error.message;
       }
-    });
+    })();
   </script>
 </body>
 </html>
